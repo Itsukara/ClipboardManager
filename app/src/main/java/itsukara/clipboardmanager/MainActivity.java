@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -39,6 +41,26 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new CustomListItemAdapter(context, clipList, clipboard, editTextClipboard);
         assert listView != null;
         listView.setAdapter(adapter);
+
+        editTextClipboard.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String newString = s.toString();
+                ClipData clip = ClipData.newPlainText("copied_text", newString);
+                clipboard.setPrimaryClip(clip);
+                Log.d("Info", "clipboard updated: "+newString);
+            }
+        });
     }
 
     @SuppressLint({"DefaultLocale", "CommitPrefEdits"})
@@ -49,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
             String clipString = clipList.get(i);
             editor.putString("clip"+String.format("%02d", i), clipString);
             Log.d("Info", "clip"+String.format("%02d", i)+":"+clipString);
-            // test for git gui
         }
         editor.commit();
 

@@ -3,17 +3,14 @@ package itsukara.clipboardmanager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -42,8 +39,8 @@ class CustomListItemAdapter extends ArrayAdapter<String> {
         }
 
         String item = getItem(position);
-        final EditText editText = (EditText)view.findViewById(R.id.editText);
-        editText.setText(item);
+        final TextView textView = (TextView)view.findViewById(R.id.textView);
+        textView.setText(item);
 
         Button buttonPaste = (Button)view.findViewById(R.id.buttonPaste);
         buttonPaste.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +53,7 @@ class CustomListItemAdapter extends ArrayAdapter<String> {
                     pasteString = item.getText().toString();
                 }
 
-                editText.setText(pasteString);
+                textView.setText(pasteString);
                 clipList.set(index, pasteString);
                 Log.d("Info", "clipList.set("+index+", "+pasteString+")");
             }
@@ -66,7 +63,7 @@ class CustomListItemAdapter extends ArrayAdapter<String> {
         buttonCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String copyString = editText.getText().toString();
+                String copyString = textView.getText().toString();
                 clipList.set(index, copyString);
                 Log.d("Info", "clipList.set("+index+", "+copyString+")");
 
@@ -75,26 +72,6 @@ class CustomListItemAdapter extends ArrayAdapter<String> {
                 editTextClipboard.setText(copyString);
             }
         });
-
-        /* 下記、予想外の動きになるため封印
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String newString = s.toString();
-                Log.d("Info", "TextChanged: index ="+index+", newString ="+newString);
-            }
-        });
-        */
 
         return view;
     }
