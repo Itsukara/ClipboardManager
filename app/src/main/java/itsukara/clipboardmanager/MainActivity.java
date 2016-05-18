@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             String clipString = clipList.get(i);
             editor.putString("clip"+String.format("%02d", i), clipString);
             Log.d("Info", "clip"+String.format("%02d", i)+":"+clipString);
+            // test for git gui
         }
         editor.commit();
 
